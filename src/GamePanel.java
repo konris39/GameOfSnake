@@ -242,7 +242,6 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
     }
-
     private boolean isRestartButtonAdded() {
         return Arrays.asList(this.getComponents()).contains(restartButton);
     }
