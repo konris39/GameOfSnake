@@ -91,12 +91,12 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
             }
             g.setColor(Color.red);
-            g.setFont(new Font("Ink Free", Font.BOLD, 40));
+            g.setFont(new Font("Roboto Condensed", Font.BOLD, 40));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
 
             g.setColor(Color.GRAY);
-            g.setFont(new Font("Ink Free", Font.BOLD, 20));
+            g.setFont(new Font("Roboto Condensed", Font.BOLD, 20));
             FontMetrics metricsTopScore = getFontMetrics(g.getFont());
             String topScoreStr = "Top Score: " + topScore;
             g.drawString(topScoreStr, (SCREEN_WIDTH - metricsTopScore.stringWidth(topScoreStr)) / 2, g.getFont().getSize() * 4);
@@ -174,38 +174,44 @@ public class GamePanel extends JPanel implements ActionListener {
     private void addRestartButton() {
         restartButton.setBackground(new Color(50, 50, 50));
         restartButton.setForeground(new Color(0, 255, 0));
-        restartButton.setFont(new Font("Ink Free", Font.BOLD, 20));
+        restartButton.setFont(new Font("Roboto Condensed", Font.BOLD, 20));
         restartButton.setText("RETRY");
 
-        restartButton.setPreferredSize(new Dimension(100, 40));
-        restartButton.setBounds((SCREEN_WIDTH - 100) / 2, SCREEN_HEIGHT / 2, 100, 40);
+        int buttonWidth = 120;
+        int buttonHeight = 40;
+        int xPosition = (SCREEN_WIDTH - buttonWidth) / 2;
+        int yPosition = SCREEN_HEIGHT - buttonHeight - 240;
+
+        restartButton.setBounds(xPosition, yPosition, buttonWidth, buttonHeight);
+        restartButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridBagLayout());
+        buttonPanel.setLayout(null);
         buttonPanel.add(restartButton);
         buttonPanel.setOpaque(false);
+        buttonPanel.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        this.setLayout(new BorderLayout());
-        this.add(buttonPanel, BorderLayout.CENTER);
+        this.removeAll();
+        this.setLayout(null);
+        this.add(buttonPanel);
 
         this.revalidate();
         this.repaint();
     }
 
-
     public void gameOver(Graphics g) {
         g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        g.setFont(new Font("Roboto Condensed", Font.BOLD, 40));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
 
         g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 75));
+        g.setFont(new Font("Roboto Condensed", Font.BOLD, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
 
         g.setColor(Color.LIGHT_GRAY);
-        g.setFont(new Font("Ink Free", Font.BOLD, 20));
+        g.setFont(new Font("Roboto Condensed", Font.BOLD, 20));
         FontMetrics metricsTopScore = getFontMetrics(g.getFont());
         String topScoreStr = "Top Score: " + topScore;
         g.drawString(topScoreStr, (SCREEN_WIDTH - metricsTopScore.stringWidth(topScoreStr)) / 2, g.getFont().getSize() * 4);
