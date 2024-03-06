@@ -18,4 +18,4 @@ Game contains score board (reset possible after opening topScores.txt)
 
 Future plans:
 
--Changing difficulty
+-Changing difficulty (by user)
