@@ -1,8 +1,12 @@
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
@@ -39,7 +43,61 @@ public class GamePanel extends JPanel implements ActionListener {
         this.remove(restartButton);
 
         startGame();
+        loadTopScores();
     }
+
+    private Integer[] topScores = new Integer[5];
+
+    private void loadTopScores() {
+        File file = new File("topScores.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try (Scanner scanner = new Scanner(file)) {
+            int index = 0;
+            while (scanner.hasNextInt() && index < topScores.length) {
+                topScores[index++] = scanner.nextInt();
+            }
+            Arrays.sort(topScores);
+            for(int i = 0; i < topScores.length / 2; i++) {
+                int temp = topScores[i];
+                topScores[i] = topScores[topScores.length - i - 1];
+                topScores[topScores.length - i - 1] = temp;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void saveTopScores() {
+        try (PrintWriter out = new PrintWriter("topScores.txt")) {
+            for (int score : topScores) {
+                out.println(score);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateTopScores() {
+        for (int i = 0; i < topScores.length; i++) {
+            if (applesEaten > topScores[i]) {
+                for (int j = topScores.length - 1; j > i; j--) {
+                    topScores[j] = topScores[j - 1];
+                }
+                topScores[i] = applesEaten;
+                break;
+            }
+        }
+        Arrays.sort(topScores, Collections.reverseOrder());
+        saveTopScores();
+    }
+
 
     private void restartGame() {
         if (applesEaten > topScore) {
@@ -57,6 +115,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.removeAll();
         this.revalidate();
         this.repaint();
+        updateTopScores();
         startGame();
     }
 
@@ -71,7 +130,26 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         draw(g);
     }
+    public void scoreboardDraw(Graphics g){
+        int startY = SCREEN_HEIGHT - 105;
+        g.setColor(Color.GRAY);
+        g.setFont(new Font("Roboto Condensed", Font.BOLD, 15));
+        FontMetrics scoreboard = getFontMetrics(g.getFont());
+        String topScoresTitle = "Top 5 Scores:";
+        g.drawString(topScoresTitle, (SCREEN_WIDTH - scoreboard.stringWidth(topScoresTitle)) / 2, startY);
+        int scoreGap = 20;
+        for (int i = topScores.length - 1; i >= 0 ; i--) {
+            g.drawString("Top " + (i + 1) + ": " + topScores[i], (SCREEN_WIDTH - (scoreboard.stringWidth(topScoresTitle) - 36)) / 2, startY + scoreGap * (i + 1));
+        }
+    }
+    private void sessionTopScore(Graphics g) {
+        g.setFont(new Font("Roboto Condensed", Font.BOLD, 20));
+        FontMetrics metricsTopScore = getFontMetrics(g.getFont());
+        String topScoreStr = "(Session) Top Score: " + topScore;
+        g.drawString(topScoreStr, (SCREEN_WIDTH - metricsTopScore.stringWidth(topScoreStr)) / 2, g.getFont().getSize() * 4);
 
+        scoreboardDraw(g);
+    }
     public void draw(Graphics g) {
         if (running) {
             for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
@@ -96,10 +174,7 @@ public class GamePanel extends JPanel implements ActionListener {
             g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
 
             g.setColor(Color.GRAY);
-            g.setFont(new Font("Roboto Condensed", Font.BOLD, 20));
-            FontMetrics metricsTopScore = getFontMetrics(g.getFont());
-            String topScoreStr = "Top Score: " + topScore;
-            g.drawString(topScoreStr, (SCREEN_WIDTH - metricsTopScore.stringWidth(topScoreStr)) / 2, g.getFont().getSize() * 4);
+            sessionTopScore(g);
         } else {
             gameOver(g);
         }
@@ -161,6 +236,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         if (!running) {
             timer.stop();
+            updateTopScores();
             if (!isRestartButtonAdded()) {
                 addRestartButton();
             }
@@ -211,10 +287,7 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
 
         g.setColor(Color.LIGHT_GRAY);
-        g.setFont(new Font("Roboto Condensed", Font.BOLD, 20));
-        FontMetrics metricsTopScore = getFontMetrics(g.getFont());
-        String topScoreStr = "Top Score: " + topScore;
-        g.drawString(topScoreStr, (SCREEN_WIDTH - metricsTopScore.stringWidth(topScoreStr)) / 2, g.getFont().getSize() * 4);
+        sessionTopScore(g);
     }
 
     @Override
