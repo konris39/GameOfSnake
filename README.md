@@ -11,6 +11,6 @@ Screen after losing your game:
 
 ![image](https://github.com/konris39/GameOfSnake/assets/151552959/a215c8af-c5b4-43f4-8591-1740c0973379)
 
-In future you will be able, to check best scores achieved and modify the game to your needs. 
+In the future, you will be able to check the highest scores achieved and customize the game to your preferences.
 
 (Changing difficulty will be added soon!)
