@@ -1,4 +1,5 @@
 Hi, welcome to my first Java project!
+
 It is a simple classic game of Snake :D
 
 Here is a brief view of the game:
