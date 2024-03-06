@@ -1,17 +1,21 @@
 Hi, welcome to my first Java project!
 
-It is a simple classic game of Snake :D
+It is a simple classic game of Snake, ENJOY :DD
 
 Here is a brief view of the game:
 
-![image](https://github.com/konris39/GameOfSnake/assets/151552959/fcb5df75-802d-47a5-8d0d-78129a70dd9e)
+![image](https://github.com/konris39/GameOfSnake/assets/151552959/d182bbf8-b00e-4274-ae69-318ea317e445)
 
 
 Screen after losing your game:
 
 
-![image](https://github.com/konris39/GameOfSnake/assets/151552959/a215c8af-c5b4-43f4-8591-1740c0973379)
+![image](https://github.com/konris39/GameOfSnake/assets/151552959/fe460182-dc48-46f1-80b5-0c67007628ae)
 
-In the future, you will be able to check the highest scores achieved and customize the game to your preferences.
+Game contains score board (reset possible after opening topScores.txt)
 
-(Changing difficulty will be added soon!)
+(You need to change all values in 5 lines to "0")
+
+Future plans:
+
+-Changing difficulty
